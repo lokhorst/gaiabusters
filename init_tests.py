@@ -4,7 +4,6 @@ from gaiabusters import DataTable
 
 
 def test_query_result():
-    c = SkyCoord(ra="18 36 56.33", dec="+38 47 01.28", frame="icrs", 
-        unit=(u.hourangle, u.deg), obstime="J2000")
+    c = SkyCoord(ra="280 deg", dec="-60 deg", frame='icrs')
     x = DataTable(c, radius="2 arcmin")
     assert len(x.query_result) > 0, "Empty table returned."
