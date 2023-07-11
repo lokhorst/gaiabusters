@@ -12,7 +12,7 @@ class DataTable():
         Gaia.MAIN_GAIA_TABLE = self.source_table
         self.query_result = Gaia.query_object_async(coord, radius)
 
-    def set_source_table(source_table):
+    def set_source_table(self, source_table):
         self.source_table = source_table
         Gaia.MAIN_GAIA_TABLE = self.source_table
 
