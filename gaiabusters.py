@@ -4,8 +4,7 @@ import astropy.units as u
 
 
 class DataTable():
-    def __init__(
-            self, coord, radius="10 arcsec", source_table="gaiadr3.gaia_source"):
+    def __init__(self, coord, radius="10 arcsec", source_table="gaiadr3.gaia_source"):
         self.coord = coord
         # configure Gaia query environment
         self.set_source_table(source_table)
