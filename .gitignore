@@ -2,3 +2,4 @@ gaiabusters/__pycache__
 build/
 dist
 gaiabusters.egg-info
+tests/__pycache__
