@@ -1,4 +1,4 @@
-__pycache__/gaiabusters.cpython-310.pyc
-__pycache__/init_tests.cpython-310-pytest-7.4.0.pyc
-__pycache__/init_tests.cpython-310.pyc
 gaiabusters/__pycache__
+build/
+dist
+gaiabusters.egg-info
