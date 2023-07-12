@@ -25,6 +25,8 @@ class DataTable():
         assert len(self.query_result) > 0, "Empty table returned."
         # set source ID
         self.source_id = self.query_result[0]["source_id"]
+        # get epoch_photometry table and set it as attribute
+        self.get_epoch_photometry()
 
     def set_source_table(self, source_table):
         """Setting the source table variables with search output.
@@ -39,7 +41,7 @@ class DataTable():
         Gaia.MAIN_GAIA_TABLE = self.source_table
 
     def get_epoch_photometry(self, verbose = False):
-        """ Retrieves epoch photometry data from datalink for current object.
+        """ Retrieves epoch photometry data from Gaia Datalink service for current object.
 
         Args:
             verbose (bool, optional): Prints verbose statements. Defaults to False.
