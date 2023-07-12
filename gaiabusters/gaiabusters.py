@@ -70,12 +70,13 @@ class DataTable():
 
     def plot_epoch_photometry(self, band = 'G', ax = None, fig = None, plot_kwargs = None):
 
-        if fig is None: fig = plt.figure(1)
-        if ax is None: ax = fig.add_subplot(111)
-        tab = ep[band]
-        #phase = tab["time"]/Period - np.floor(tab["time"]/Period)
-        ax.plot(phase, tab["mag"], plot_kwargs)
-        ax.invert_yaxis()
+        pass
+        # if fig is None: fig = plt.figure(1)
+        # if ax is None: ax = fig.add_subplot(111)
+        # tab = ep[band]
+        # #phase = tab["time"]/Period - np.floor(tab["time"]/Period)
+        # ax.plot(phase, tab["mag"], plot_kwargs)
+        # ax.invert_yaxis()
 
     def get_spectrum(self):
         pass
