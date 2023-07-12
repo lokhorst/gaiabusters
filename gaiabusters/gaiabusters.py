@@ -1,7 +1,7 @@
 from astroquery.gaia import Gaia
 from astropy.coordinates import SkyCoord
 import astropy.units as u
-#import numpy as np
+import numpy as np
 
 
 class DataTable():
@@ -50,7 +50,11 @@ class DataTable():
         data_structure = 'INDIVIDUAL'   # Options are: 'INDIVIDUAL', 'COMBINED', 'RAW'
         data_release   = 'Gaia DR3'     # Options are: 'Gaia DR3' (default), 'Gaia DR2'
 
-        datalink = Gaia.load_data(ids=self.source_id, data_release = data_release, 
+        assert np.ndim(self.source_id)==0, "Check that source id is scalar, just in case" 
+        assert int(self.source_id), "Wrong type: source_id cannot be converted to int (needed by astroquery)"
+
+        #int is necessary for astroquery to work, it doesn't like np.int64 
+        datalink = Gaia.load_data(ids=int(self.source_id), data_release = data_release, 
                                 retrieval_type=retrieval_type, 
                                 data_structure = data_structure, 
                                 verbose = False, output_file = None)
@@ -58,7 +62,7 @@ class DataTable():
         dl_key = f"{retrieval_type}-{data_release} {self.source_id}.xml"
 
         if verbose:
-            print(f'The following Datalink products have been downloaded:')
+            print(f'Datalink {retrieval_type} retrieved from {data_release}')
             
         #Convert datalink table to Astropytable and store as attribute   
         eptable = datalink[dl_key][0].to_table()  
