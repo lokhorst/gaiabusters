@@ -1,7 +1,7 @@
 from astroquery.gaia import Gaia
 from astropy.coordinates import SkyCoord
 import astropy.units as u
-#import numpy as np
+import numpy as np
 
 
 class DataTable():
@@ -25,6 +25,8 @@ class DataTable():
         assert len(self.query_result) > 0, "Empty table returned."
         # set source ID
         self.source_id = self.query_result[0]["source_id"]
+        # get epoch_photometry table and set it as attribute
+        self.get_epoch_photometry()
 
     def set_source_table(self, source_table):
         """Setting the source table variables with search output.
@@ -39,7 +41,7 @@ class DataTable():
         Gaia.MAIN_GAIA_TABLE = self.source_table
 
     def get_epoch_photometry(self, verbose = False):
-        """ Retrieves epoch photometry data from datalink for current object.
+        """ Retrieves epoch photometry data from Gaia Datalink service for current object.
 
         Args:
             verbose (bool, optional): Prints verbose statements. Defaults to False.
@@ -50,7 +52,11 @@ class DataTable():
         data_structure = 'INDIVIDUAL'   # Options are: 'INDIVIDUAL', 'COMBINED', 'RAW'
         data_release   = 'Gaia DR3'     # Options are: 'Gaia DR3' (default), 'Gaia DR2'
 
-        datalink = Gaia.load_data(ids=self.source_id, data_release = data_release, 
+        assert np.ndim(self.source_id)==0, "Check that source id is scalar, just in case" 
+        assert int(self.source_id), "Wrong type: source_id cannot be converted to int (needed by astroquery)"
+
+        #int is necessary for astroquery to work, it doesn't like np.int64 
+        datalink = Gaia.load_data(ids=int(self.source_id), data_release = data_release, 
                                 retrieval_type=retrieval_type, 
                                 data_structure = data_structure, 
                                 verbose = False, output_file = None)
@@ -58,7 +64,7 @@ class DataTable():
         dl_key = f"{retrieval_type}-{data_release} {self.source_id}.xml"
 
         if verbose:
-            print(f'The following Datalink products have been downloaded:')
+            print(f'Datalink {retrieval_type} retrieved from {data_release}')
             
         #Convert datalink table to Astropytable and store as attribute   
         eptable = datalink[dl_key][0].to_table()  
@@ -70,12 +76,13 @@ class DataTable():
 
     def plot_epoch_photometry(self, band = 'G', ax = None, fig = None, plot_kwargs = None):
 
-        if fig is None: fig = plt.figure(1)
-        if ax is None: ax = fig.add_subplot(111)
-        tab = ep[band]
-        #phase = tab["time"]/Period - np.floor(tab["time"]/Period)
-        ax.plot(phase, tab["mag"], plot_kwargs)
-        ax.invert_yaxis()
+        pass
+        # if fig is None: fig = plt.figure(1)
+        # if ax is None: ax = fig.add_subplot(111)
+        # tab = ep[band]
+        # #phase = tab["time"]/Period - np.floor(tab["time"]/Period)
+        # ax.plot(phase, tab["mag"], plot_kwargs)
+        # ax.invert_yaxis()
 
     def get_spectrum(self):
         pass
