@@ -1,5 +1,4 @@
 #from gaiabusters import DataTable
-import init_tests
 import astropy.io.ascii
 import astropy.coordinates as ac
 import astropy.units as u
