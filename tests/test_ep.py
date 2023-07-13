@@ -1,9 +1,12 @@
 #from gaiabusters import DataTable
+import os
 import astropy.io.ascii
 import astropy.coordinates as ac
 import astropy.units as u
 import gaiabusters
 import numpy as np
+
+cwd = os.path.dirname(os.path.abspath(__file__))
 
 #This only works for DR3 as source_ids change with DRs
 def test_get_epoch_photometry(source_id=245002531050576896):
@@ -22,7 +25,7 @@ def test_get_epoch_photometry(source_id=245002531050576896):
     assert len(dt.epoch_photometry['G']) > 0, "ERROR: Empty table returned (G-band)"
 
     #Read in control table
-    control_tb = astropy.io.ascii.read('ep_testdata.csv',format='csv')
+    control_tb = astropy.io.ascii.read(os.path.join(cwd, 'ep_testdata.csv'),format='csv')
     control = {}
     for band in ["G","BP","RP"]:
         control[band] = control_tb[control_tb['band']==band]
