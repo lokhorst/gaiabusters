@@ -1,6 +1,17 @@
 from astroquery.gaia import Gaia
+from astroquery.sdss import SDSS
+
+from astropy.io import fits
+from astropy.wcs import WCS
+from astropy.nddata import Cutout2D
 from astropy.coordinates import SkyCoord
 import astropy.units as u
+
+from reproject.mosaicking import find_optimal_celestial_wcs
+from reproject import reproject_interp
+from reproject.mosaicking import reproject_and_coadd
+
+import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -15,7 +26,7 @@ class DataTable():
             source_table (str, optional): Which gaia source table to query. Can specify dr2, dr3, etc.
                 Needs to be a source table. Defaults to "gaiadr3.gaia_source".
         """
-        
+        self.radius = radius
         self.coord = coord
         # configure Gaia query environment
         self.set_source_table(source_table)
@@ -90,4 +101,57 @@ class DataTable():
         pass
 
     def get_sdss(self):
-        pass
+        """ 
+        Query SDSS for image of region surrounding ra, dec coords.    
+        This function uses mosaicking of plate images provided by reproject:
+        https://reproject.readthedocs.io/en/stable/mosaicking.html   
+        Output image not advised for science, use at own peril.
+        """
+        
+        # Query SDSS
+        xid = SDSS.query_region(self.coord, radius=self.radius, spectro=False)
+        if xid is None:
+            print('No SDSS overlap with region of interest.')
+            return None
+        
+        # Get images from SDSS (returns whole plate)
+        imlist = SDSS.get_images(matches=xid, band='g') # returns whole plate, need to cutout region
+        hdus = [im[0] for im in imlist]
+        # for i in range(len(imlist)):
+        #     w = WCS(imlist[i][0])
+        #     data = imlist[i][0].data
+        #     header = imlist[i][0].header
+        #     hdu = fits.PrimaryHDU(data,header=header)
+        #     hdu.writeto(f'test_{i}.fits',overwrite=True)
+
+        # Make a mosaic from the images
+        wcs_out, shape_out = find_optimal_celestial_wcs(hdus)
+        array, footprint = reproject_and_coadd(
+            hdus, wcs_out, shape_out=shape_out, reproject_function=reproject_interp
+            )
+        w = WCS(wcs_out.to_header())
+
+        # Cutout the region of interest
+        radius_qty = u.Quantity(self.radius,unit=self.radius.split(' ')[1])
+        cutout = Cutout2D(array, self.coord, radius_qty, wcs=w)
+        cutoutdata = cutout.data
+        cutoutheader = cutout.wcs.to_header() 
+        ## TODO: Header just contains WCS, need to update with more information ##
+        
+        # Construct HDU and assign to global variable
+        hdu = fits.PrimaryHDU(cutoutdata, header=cutoutheader)
+        self.sdss_im = hdu
+        return self.sdss_im
+    
+    def plot_sdss(self):
+        """ Plot the SDSS image that was retrieved in this.get_sdss.
+        """
+        if self.sdss_im is None:
+            print('Need to run get_sdss to load an image first!')
+            return None
+        
+        wnew = WCS(self.sdss_im.header)
+        plt.subplot(projection=wnew)
+        plt.imshow(
+            self.sdss_im.data,vmin=0.1,vmax=0.8,interpolation='nearest',origin='lower')
+        plt.show()
