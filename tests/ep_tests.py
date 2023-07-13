@@ -36,6 +36,6 @@ def test_get_epoch_photometry(source_id=245002531050576896):
 
     print(' Epoch_Photometry Tests passed... (Yay!)')
 
-#init_tests.test_query_result()
+init_tests.test_query_result()
 
 test_get_epoch_photometry()

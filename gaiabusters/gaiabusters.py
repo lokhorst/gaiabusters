@@ -25,8 +25,10 @@ class DataTable():
         assert len(self.query_result) > 0, "Empty table returned."
         # set source ID
         self.source_id = self.query_result[0]["source_id"]
+        self.has_epoch_photometry = self.query_result[0]["has_epoch_photometry"]
         # get epoch_photometry table and set it as attribute
-        self.get_epoch_photometry()
+        if self.has_epoch_photometry:
+            self.get_epoch_photometry()
 
     def set_source_table(self, source_table):
         """Setting the source table variables with search output.
