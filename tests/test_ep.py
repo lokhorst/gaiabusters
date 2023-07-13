@@ -35,7 +35,3 @@ def test_get_epoch_photometry(source_id=245002531050576896):
         assert np.allclose(control[band]['mag'], dt.epoch_photometry[band]['mag']), 'Nope...'
 
     print(' Epoch_Photometry Tests passed... (Yay!)')
-
-#init_tests.test_query_result()
-
-test_get_epoch_photometry()
