@@ -1,3 +1,2 @@
-__version__ = "0.1"
-
+from .version import __version__
 from .gaiabusters import DataTable
