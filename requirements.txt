@@ -1,2 +1,5 @@
-astropy
+astropy # pip install astropy==5.1.1 for wcs projection plotting to work
 astroquery
+matplotlib
+reproject
+numpy
