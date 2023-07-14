@@ -47,6 +47,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#gaiabusters.DataTable"><code class="docutils literal notranslate"><span class="pre">DataTable</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#gaiabusters.DataTable.__init__"><code class="docutils literal notranslate"><span class="pre">DataTable.__init__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#gaiabusters.DataTable.get_epoch_photometry"><code class="docutils literal notranslate"><span class="pre">DataTable.get_epoch_photometry()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gaiabusters.DataTable.get_sdss"><code class="docutils literal notranslate"><span class="pre">DataTable.get_sdss()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gaiabusters.DataTable.plot_sdss"><code class="docutils literal notranslate"><span class="pre">DataTable.plot_sdss()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#gaiabusters.DataTable.set_source_table"><code class="docutils literal notranslate"><span class="pre">DataTable.set_source_table()</span></code></a></li>
 </ul>
 </li>
@@ -104,12 +106,27 @@ Needs to be a source table. Defaults to “gaiadr3.gaia_source”.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="gaiabusters.DataTable.get_epoch_photometry">
 <span class="sig-name descname"><span class="pre">get_epoch_photometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gaiabusters.DataTable.get_epoch_photometry" title="Permalink to this definition"></a></dt>
-<dd><p>Retrieves epoch photometry data from datalink for current object.</p>
+<dd><p>Retrieves epoch photometry data from Gaia Datalink service for current object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Prints verbose statements. Defaults to False.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaiabusters.DataTable.get_sdss">
+<span class="sig-name descname"><span class="pre">get_sdss</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gaiabusters.DataTable.get_sdss" title="Permalink to this definition"></a></dt>
+<dd><p>Query SDSS for image of region surrounding ra, dec coords.
+This function uses mosaicking of plate images provided by reproject:
+<a class="reference external" href="https://reproject.readthedocs.io/en/stable/mosaicking.html">https://reproject.readthedocs.io/en/stable/mosaicking.html</a>
+Output image not advised for science, use at own peril.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaiabusters.DataTable.plot_sdss">
+<span class="sig-name descname"><span class="pre">plot_sdss</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gaiabusters.DataTable.plot_sdss" title="Permalink to this definition"></a></dt>
+<dd><p>Plot the SDSS image that was retrieved in this.get_sdss.</p>
 </dd></dl>
 
 <dl class="py method">
